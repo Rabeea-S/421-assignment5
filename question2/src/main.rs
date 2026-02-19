@@ -36,6 +36,7 @@ fn main() {
 // x : 13, y : 46
 
 // References:
+// https://users.rust-lang.org/t/flattening-and-collecting-a-nested-iterator-of-results/68525
 // https://stackoverflow.com/questions/58737024/how-to-get-the-index-of-the-current-element-being-processed-in-the-iteration-wit
 // https://doc.rust-lang.org/beta/std/iter/struct.Flatten.html
 // https://stackoverflow.com/questions/67277966/rust-no-method-named-iter-found-for-struct-stdopsrangeusize-in-the-cu
