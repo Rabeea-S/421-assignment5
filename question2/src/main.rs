@@ -4,18 +4,8 @@ pub struct L{
 }
 
 pub fn foo(text: &str, string: &str) -> Vec<L> {
-    let mut r = Vec::new();
-    let mut x = 0;
-    for line in text.lines() {
-        for (y, _) in line.match_indices(string){
-            r.push(L{
-                x: x,
-                y: y,
-            })
-        }
-        x += 1;
-    }
-    r
+    text.lines().collect::<Vec<&str>>().iter().enumerate()
+    .map(|(x, line)| line.match_indices(string).map(move |(y, _)| L{x, y})).flatten().collect()
 }
 
 fn main() {
@@ -44,3 +34,10 @@ fn main() {
 // x : 4, y : 22
 // x : 12, y : 27
 // x : 13, y : 46
+
+// References:
+// https://stackoverflow.com/questions/58737024/how-to-get-the-index-of-the-current-element-being-processed-in-the-iteration-wit
+// https://doc.rust-lang.org/beta/std/iter/struct.Flatten.html
+// https://stackoverflow.com/questions/67277966/rust-no-method-named-iter-found-for-struct-stdopsrangeusize-in-the-cu
+// https://users.rust-lang.org/t/where-is-flatten-skipping-none-documented/89255
+// https://users.rust-lang.org/t/flatten-an-iterator-of-result-vec-t-error-while-collecting-it/63766
