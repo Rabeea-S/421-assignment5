@@ -4,8 +4,7 @@ pub struct L{
 }
 
 pub fn foo(text: &str, string: &str) -> Vec<L> {
-    text.lines().collect::<Vec<&str>>().iter().enumerate()
-    .map(|(x, line)| line.match_indices(string).map(move |(y, _)| L{x, y})).flatten().collect()
+    text.lines().collect::<Vec<&str>>().iter().enumerate().map(|(x, line)| line.match_indices(string).map(move |(y, _)| L{x, y})).flatten().collect()
 }
 
 fn main() {

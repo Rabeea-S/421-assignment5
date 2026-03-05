@@ -35,15 +35,58 @@ impl Trie {
     }
 
     fn length(&self) -> usize {
+        Self::length_impl(&self.root)
+    }
+
+    fn length_impl(node: &TrieNode) -> usize {
+        let mut total = 0;
+
+        if node.value.is_some() {
+            total += 1;
+        }
+
+        for child in node.chs.values() {
+            total += Self::length_impl(child);
+        }
+
+        total
     }
 
     fn iter(&self) -> Vec<(char, Option<i32>)> {
+        let mut iterator = Vec::new();
+        Self::iter_impl(&mut iterator, &self.root);
+        iterator
+    }
+
+    fn iter_impl(iterator: &mut Vec<(char, Option<i32>)>, node: &TrieNode) {
+        for (key, children_node) in &node.chs {
+            (*iterator).push((*key, children_node.value));
+            Self::iter_impl(iterator, children_node);
+        }
     }
 
     fn find(&self, key: &String) -> Option<&TrieNode> {
+        let mut current_node = &self.root;
+        for character in key.chars() {
+            if !current_node.chs.contains_key(&character) {
+                return None;
+            }
+            current_node = current_node.chs.get(&character).unwrap();
+        }
+        Some(&current_node)
     }
 
     fn delete(&mut self, key: &String) -> Option<i32> {
+        let mut current_node = &mut self.root;
+        for character in key.chars() {
+            if !current_node.chs.contains_key(&character) {
+                return None;
+            }
+            current_node = current_node.chs.get_mut(&character).unwrap();
+        }
+        let val = current_node.value;
+        current_node.value = None;
+        val
     }
 }
 
@@ -56,3 +99,7 @@ fn main() {
 
 // References:
 // https://docs.rs/radix_trie/0.0.9/radix_trie/struct.Trie.html#method.len
+// https://rust.code-maven.com/check-of-key-exists-in-hashmap
+// https://doc.rust-lang.org/std/str/struct.Chars.html
+// https://doc.rust-lang.org/rust-by-example/std/hash.html
+// https://users.rust-lang.org/t/difference-in-behavior-of-hashmap-get-and-get-mut/9734/3
